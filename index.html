@@ -1,429 +1,466 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Marcas da Gringa | Curadoria Internacional</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        :root { --gold: #C9A84C; --black: #1a1a1a; --white: #ffffff; --gray: #f9f8f6; }
-        * { margin:0; padding:0; box-sizing:border-box; }
-        body { font-family: 'Georgia', serif; background: var(--gray); color: var(--black); line-height: 1.6; scroll-behavior: smooth; }
-
-        #cookie-banner { position: fixed; bottom: 0; width: 100%; background: var(--black); color: white; padding: 15px; text-align: center; z-index: 9999; font-size: 13px; cursor: pointer; border-top: 2px solid var(--gold); }
-
-        .topbar { background: var(--black); color: var(--gold); padding: 10px; text-align: center; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; }
-
-        header { background: var(--white); padding: 25px 5%; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e8e8e8; position: sticky; top: 0; z-index: 1000; }
-        
-        .logo-box { display: flex; align-items: center; gap: 18px; text-decoration: none; color: inherit; transform: scale(1.2); transform-origin: left; min-width: 250px; }
-        .logo-sq { width: 45px; height: 45px; border: 2px solid var(--black); display: flex; align-items: center; justify-content: center; font-weight: 400; position: relative; }
-        .logo-sq::after { content: ''; position: absolute; inset: 3px; border: 1px solid var(--gold); }
-        .logo-text h1 { font-size: 16px; letter-spacing: 4px; margin: 0; font-weight: 400; }
-        .logo-text p { font-size: 9px; color: var(--gold); letter-spacing: 3px; }
-
-        nav { flex-grow: 1; display: flex; justify-content: center; }
-        nav ul { list-style: none; display: flex; gap: 50px; transform: scale(1.2); margin-left: 10px; }
-        nav ul li { position: relative; }
-        nav ul li a { text-decoration: none; color: var(--black); font-size: 11px; letter-spacing: 2px; text-transform: uppercase; font-weight: 400; transition: 0.3s; cursor: pointer; }
-        nav ul li a:hover { color: var(--gold); }
-
-        .dropdown-content { display: none; position: absolute; background: white; min-width: 180px; box-shadow: 0 8px 16px rgba(0,0,0,0.1); top: 100%; left: 0; border-top: 1px solid var(--gold); }
-        .dropdown:hover .dropdown-content { display: block; }
-        .dropdown-content a { color: black; padding: 12px 16px; display: block; font-size: 10px; font-weight: 400; border-bottom: 1px solid #eee; letter-spacing: 1px; text-transform: capitalize; text-decoration: none; }
-
-        .search-container { display: flex; align-items: center; background: var(--white); border: 1px solid #ddd; margin-left: 30px; padding: 8px; border-radius: 4px; }
-        .search-container input { border: none; background: transparent; outline: none; font-size: 12px; width: 60px; font-family: 'Georgia', serif; text-transform: lowercase; }
-        .search-icon { font-size: 14px; color: var(--black); cursor: pointer; margin-left: 5px; }
-
-        .hero { position: relative; height: 500px; background: url('https://i.postimg.cc/pTwTQnPY/Veneza-3.gif') no-repeat center center; background-size: cover; display: flex; align-items: center; justify-content: center; color: white; text-align: center; filter: brightness(0.8); }
-        .hero-content { z-index: 1; text-shadow: 1px 1px 5px rgba(0,0,0,0.5); filter: brightness(1.2); }
-        .hero-content.no-shadow { text-shadow: none; filter: none; }
-        .hero h2 { font-size: 48px; letter-spacing: 10px; text-transform: uppercase; font-weight: 400; }
-
-        .section-title { text-align: center; padding: 60px 0 30px; }
-        .section-title h2 { font-size: 28px; letter-spacing: 5px; text-transform: uppercase; color: var(--gold); font-weight: 400; text-shadow: none; }
-
-        .brands-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; padding: 0 5% 60px; max-width: 1200px; margin: 0 auto; min-height: 400px; }
-        .brand-card { background: white; padding: 40px 20px; text-align: center; border: 1px solid #eee; height: 400px; display: flex; flex-direction: column; justify-content: center; }
-        .brand-logo { height: 100px; margin-bottom: 20px; display: flex; align-items: center; justify-content: center; }
-        .brand-logo img { max-height: 100%; object-fit: contain; }
-        
-        .logo-guess { transform: scale(1.3); }
-        .logo-liquido { transform: scale(1.17); }
-        .logo-liliboo { transform: scale(1.8); }
-        .logo-funko { transform: scale(0.9); }
-        .brand-card h3 { font-size: 11px; color: var(--gold); font-weight: 400; margin-bottom: 10px; }
-
-        .brand-card p { font-family: 'Georgia', serif; font-size: 13px; color: #666; margin-bottom: 20px; font-weight: 400; }
-        .buy-btn { background: var(--black); color: white; padding: 12px; text-decoration: none; font-size: 10px; letter-spacing: 2px; margin-top: 20px; font-weight: 400; }
-
-        .page-content { display: none; padding: 80px 15%; background: white; min-height: 800px; }
-        .page-active { display: block; }
-        .page-content h2 { color: var(--gold); margin-bottom: 30px; text-transform: uppercase; letter-spacing: 3px; font-weight: 400; }
-        .page-content p, .page-content li, .page-content div { font-family: 'Georgia', serif; font-size: 15px; color: #444; margin-bottom: 15px; line-height: 1.8; font-weight: 400 !important; }
-
-        .footer-main { background: #f4f4f4; padding: 40px 5%; display: flex; justify-content: space-between; border-top: 1px solid #ddd; }
-        .footer-col { flex: 1; padding: 0 20px; }
-        .footer-col h4 { font-size: 13px; letter-spacing: 2px; margin-bottom: 12px; text-transform: uppercase; color: var(--black); font-weight: 400; }
-        .footer-col ul { list-style: none; padding: 0; margin: 0; }
-        .footer-col ul li { margin-bottom: 6px; }
-        .footer-col ul li a { text-decoration: none; color: #666; font-size: 12px; cursor: pointer; font-weight: 400; text-transform: uppercase; }
-        footer { background: var(--black); color: #888; padding: 15px; text-align: center; font-size: 11px; letter-spacing: 2px; }
-
-        .footer-social-icons { display: flex; gap: 20px; font-size: 20px; margin-top: 10px; }
-        .footer-social-icons a { color: var(--black); text-decoration: none; }
-        
-        .faq-item { margin-bottom: 15px; padding: 10px; border-bottom: 1px solid #eee; }
-        .faq-q { color: var(--black); font-weight: 400; display: block; margin-bottom: 8px; }
-        .faq-a { display: block; margin-top: 5px; color: #444; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marcas da Gringa | Curadoria Internacional</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<style>
+:root { --gold: #C9A84C; --black: #1a1a1a; --white: #ffffff; --gray: #f9f8f6; }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: 'Georgia', serif; background: var(--gray ); color: var(--black); line-height: 1.6; scroll-behavior: smooth; }
+#cookie-banner { position: fixed; bottom: 0; width: 100%; background: var(--black); color: white; padding: 15px; text-align: center; z-index: 9999; font-size: 13px; cursor: pointer; border-top: 2px solid var(--gold); }
+.topbar { background: var(--black); color: var(--gold); padding: 10px; text-align: center; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; }
+header { background: var(--white); padding: 25px 5%; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e8e8e8; position: sticky; top: 0; z-index: 1000; flex-wrap: wrap; gap: 15px; }
+.logo-box { display: flex; align-items: center; gap: 18px; text-decoration: none; color: inherit; transform: scale(1.2); transform-origin: left; min-width: 250px; }
+.logo-sq { width: 45px; height: 45px; border: 2px solid var(--black); display: flex; align-items: center; justify-content: center; font-weight: 400; position: relative; }
+.logo-sq::after { content: ''; position: absolute; inset: 3px; border: 1px solid var(--gold); }
+.logo-text h1 { font-size: 16px; letter-spacing: 4px; margin: 0; font-weight: 400; }
+.logo-text p { font-size: 9px; color: var(--gold); letter-spacing: 3px; }
+nav { flex-grow: 1; display: flex; justify-content: center; }
+nav ul { list-style: none; display: flex; gap: 60px; transform: scale(1.2); margin-left: 20px; width: 100%; justify-content: space-evenly; }
+nav ul li { position: relative; }
+nav ul li a { text-decoration: none; color: var(--black); font-size: 11px; letter-spacing: 2px; text-transform: uppercase; font-weight: 400; transition: 0.3s; cursor: pointer; }
+nav ul li a:hover { color: var(--gold); }
+.dropdown-content { display: none; position: absolute; background: white; min-width: 180px; box-shadow: 0 8px 16px rgba(0,0,0,0.1); top: 100%; left: 0; border-top: 1px solid var(--gold); }
+.dropdown:hover .dropdown-content { display: block; }
+.dropdown-content a { color: black; padding: 12px 16px; display: block; font-size: 10px; font-weight: 400; border-bottom: 1px solid #eee; letter-spacing: 1px; text-transform: capitalize; text-decoration: none; }
+.search-container { display: flex; align-items: center; background: var(--white); border: 1px solid #ddd; margin-left: 30px; padding: 8px; border-radius: 4px; }
+.search-container input { border: none; background: transparent; outline: none; font-size: 12px; width: 60px; font-family: 'Georgia', serif; text-transform: lowercase; }
+.search-icon { font-size: 14px; color: var(--black); cursor: pointer; margin-left: 5px; }
+.hero { position: relative; height: 500px; background: url('https://i.postimg.cc/pTwTQnPY/Veneza-3.gif' ) no-repeat center center; background-size: cover; display: flex; align-items: center; justify-content: center; color: white; text-align: center; filter: brightness(0.8); }
+.hero-content { z-index: 1; text-shadow: 1px 1px 5px rgba(0,0,0,0.5); filter: brightness(1.2); width: 100%; }
+.hero-content.no-shadow { text-shadow: none; filter: none; }
+.hero h2 { font-size: 48px; letter-spacing: 10px; text-transform: uppercase; font-weight: 400; }
+.section-title { text-align: center; padding: 60px 0 30px; }
+.section-title h2 { font-size: 28px; letter-spacing: 5px; text-transform: uppercase; color: var(--gold); font-weight: 400; text-shadow: none; }
+.brands-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; padding: 0 5% 60px; max-width: 1200px; margin: 0 auto; min-height: 400px; }
+.brand-card { background: white; padding: 10px 20px; text-align: center; border: 1px solid #eee; height: 360px; width: 300px; margin: 0 auto; display: flex; flex-direction: column; justify-content: center; }
+.brand-logo { height: 100px; margin-top: 0; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; }
+.brand-logo img { max-height: 100%; object-fit: contain; }
+.logo-guess { transform: scale(1.3); }
+.logo-liquido { transform: scale(1.17); }
+.logo-liliboo { transform: scale(1.8); }
+.logo-funko { transform: scale(0.9); }
+.brand-card h3 { font-size: 11px; color: var(--gold); font-weight: 400; margin-bottom: 10px; }
+.brand-card p { font-family: 'Georgia', serif; font-size: 13px; color: #666; margin-bottom: 20px; font-weight: 400; }
+.buy-btn { background: var(--black); color: white; padding: 12px; text-decoration: none; font-size: 10px; letter-spacing: 2px; margin-top: 5px; margin-bottom: 5px; font-weight: 400; }
+.page-content { display: none; padding: 80px 15%; background: white; min-height: 800px; }
+.page-active { display: block; }
+.page-content h2 { color: var(--gold); margin-bottom: 30px; text-transform: uppercase; letter-spacing: 3px; font-weight: 400; }
+.page-content p, .page-content li, .page-content div { font-family: 'Georgia', serif; font-size: 15px; color: #444; margin-bottom: 5px; line-height: 1.8; font-weight: 400 !important; }
+.footer-main { background: #f4f4f4; padding: 40px 5%; display: flex; justify-content: space-between; border-top: 1px solid #ddd; flex-wrap: wrap; gap: 30px; }
+.footer-col { flex: 1; min-width: 200px; padding: 0 20px; }
+.footer-col h4 { font-size: 13px; letter-spacing: 2px; margin-bottom: 12px; text-transform: uppercase; color: var(--black); font-weight: 400; }
+.footer-col ul { list-style: none; padding: 0; margin: 0; }
+.footer-col ul li { margin-bottom: 6px; }
+.footer-col ul li a { text-decoration: none; color: #666; font-size: 12px; cursor: pointer; font-weight: 400; text-transform: uppercase; }
+footer { background: var(--black); color: #888; padding: 15px; text-align: center; font-size: 11px; letter-spacing: 2px; }
+.footer-social-icons { display: flex; gap: 20px; font-size: 20px; margin-top: 10px; }
+.footer-social-icons a { color: var(--black); text-decoration: none; cursor: pointer; }
+.faq-item { margin-bottom: 5px; padding: 5px 10px; border-bottom: 1px solid #eee; }
+.faq-q { color: var(--black); font-weight: 400; display: block; margin-bottom: 2px; }
+.faq-a { display: block; margin-top: 2px; color: #444; }
+.modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 10000; align-items: center; justify-content: center; padding: 20px; }
+.modal-content { background: white; width: 100%; max-width: 500px; padding: 30px; border-radius: 4px; position: relative; }
+.modal-content h2 { color: var(--gold); font-size: 18px; letter-spacing: 2px; margin-bottom: 20px; text-transform: uppercase; font-weight: 400; }
+.modal-form { display: flex; flex-direction: column; gap: 15px; }
+.modal-form input, .modal-form textarea { padding: 12px; border: 1px solid #ddd; font-family: 'Georgia', serif; font-size: 14px; outline: none; }
+.modal-form textarea { height: 150px; resize: none; }
+.modal-btns { display: flex; gap: 10px; margin-top: 10px; }
+.modal-btns button { flex: 1; padding: 12px; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; border: none; transition: 0.3s; }
+.btn-cancel { background: #eee; color: #333; }
+.btn-send { background: var(--black); color: white; }
+.btn-send:hover { background: var(--gold); }
+@media (max-width: 768px) {
+    header { padding: 15px 5%; justify-content: center; }
+    .logo-box { transform: scale(1); min-width: auto; margin-bottom: 10px; }
+    nav ul { gap: 20px; transform: scale(1); margin-left: 0; flex-wrap: wrap; justify-content: center; }
+    .search-container { margin-left: 0; width: 100%; justify-content: center; }
+    .search-container input { width: 150px; }
+    .hero h2 { font-size: 32px; letter-spacing: 5px; }
+    .page-content { padding: 40px 5%; }
+    .footer-col { padding: 0; text-align: center; }
+    .footer-social-icons { justify-content: center; }
+}
+</style>
 </head>
 <body onclick="closeCookies()">
+<div id="cookie-banner">Utilizamos cookies para melhorar sua experiência. Ao continuar, você concorda.</div>
+<div class="topbar">Curadoria Premium · Marcas Originais · Entrega em todo o Brasil</div>
+<header>
+<a href="javascript:void(0)" onclick="resetHeroFromBrands()" class="logo-box">
+<div class="logo-sq"><div class="logo-sq-inner"></div><span>MG</span></div>
+<div class="logo-text"><h1>MARCAS</h1><p>DA GRINGA</p></div>
+</a>
+<nav>
+<ul>
+<li><a onclick="resetHeroFromBrands()">Início</a></li>
+<li class="dropdown">
+<a>Marcas ▾</a>
+<div class="dropdown-content">
+<a href="https://lmdee.link/uA-rQMe5-RKj" target="_blank">Aeropostale</a>
+<a href="https://lmdee.link/iMa18Trvld-P" target="_blank">Guess</a>
+<a href="https://lmdee.link/T3uQlonUbKwz" target="_blank">Funko</a>
+<a href="https://lmdee.link/324oCyCOMHS-" target="_blank">Líquido</a>
+<a href="https://www.instagram.com/liliboomodas/" target="_blank">Liliboo</a>
+<a onclick="showBrandsInHero( )">Todas</a>
+</div>
+</li>
+<li class="dropdown">
+<a>Categorias ▾</a>
+<div class="dropdown-content">
+<a onclick="goToSection('loja', 'masculino')">Masculino</a>
+<a onclick="goToSection('loja', 'feminino')">Feminino</a>
+<a onclick="goToSection('loja', 'infantil')">Infantil</a>
+<a onclick="goToSection('loja', 'acessorios')">Acessórios</a>
+<a onclick="goToSection('loja', 'outros')">Outros</a>
+</div>
+</li>
+<li class="dropdown">
+<a>País ▾</a>
+<div class="dropdown-content">
+<a onclick="goToSection('loja', 'estados unidos')">Estados Unidos</a>
+<a onclick="goToSection('loja', 'brasil')">Brasil</a>
+</div>
+</li>
+</ul>
+</nav>
+<div class="search-container">
+<input type="text" id="search-input" placeholder="procura..." onkeyup="searchSite(event)">
+<i class="fas fa-search search-icon" onclick="runSearch()"></i>
+</div>
+</header>
+<main id="home-page" class="page-active">
+<section class="hero" id="hero-section">
+<div class="hero-content" id="hero-dynamic-content">
+<p style="letter-spacing: 5px; font-size: 12px;">BEM-VINDO À</p>
+<h2>MARCAS DA GRINGA</h2>
+<p style="letter-spacing: 3px; font-size: 14px;">O melhor do estilo internacional diretamente para você.</p>
+</div>
+</section>
+<div id="main-brands-block" style="display: none;">
+<div class="section-title" id="loja">
+<h2 id="cat-title">NOSSAS MARCAS</h2>
+</div>
+<section class="brands-grid" id="main-grid">
+<div class="brand-card" data-cat="masculino feminino acessorios estados unidos">
+<div class="brand-logo"><img src="https://i.postimg.cc/JHq1NGjD/aeropostale-logo-2.png" alt="Aeropostale"></div>
+<h3>ESTADOS UNIDOS</h3>
+<p>Moda casual americana autêntica e desejada.</p>
+<a href="https://lmdee.link/uA-rQMe5-RKj" target="_blank" class="buy-btn">COMPRAR AGORA</a>
+</div>
+<div class="brand-card" data-cat="masculino feminino acessorios estados unidos">
+<div class="brand-logo"><img src="https://i.postimg.cc/jL3hcvxf/guess-wordmark-logo.png" class="logo-guess" alt="Guess"></div>
+<h3>ESTADOS UNIDOS</h3>
+<p>Sofisticação e glamour com DNA californiano.</p>
+<a href="https://lmdee.link/iMa18Trvld-P" target="_blank" class="buy-btn">COMPRAR AGORA</a>
+</div>
+<div class="brand-card" data-cat="outros estados unidos">
+<div class="brand-logo"><img src="https://i.postimg.cc/k2Vvp8DC/funko-logo-1.png" class="logo-funko" alt="Funko"></div>
+<h3>ESTADOS UNIDOS</h3>
+<p>Os colecionáveis mais famosos do mundo.</p>
+<a href="https://lmdee.link/T3uQlonUbKwz" target="_blank" class="buy-btn">COMPRAR AGORA</a>
+</div>
+<div class="brand-card" data-cat="masculino feminino acessorios brasil">
+<div class="brand-logo"><img src="https://i.postimg.cc/Jsy52J0v/liquidost-logo.png" class="logo-liquido" alt="Líquido"></div>
+<h3>BRASIL</h3>
+<p>Alta performance e estilo para o seu treino.</p>
+<a href="https://lmdee.link/324oCyCOMHS-" target="_blank" class="buy-btn">COMPRAR AGORA</a>
+</div>
+<div class="brand-card" data-cat="infantil brasil">
+<div class="brand-logo"><img src="https://i.postimg.cc/wB1Tf0yQ/Liliboo-logo.png" class="logo-liliboo" alt="Liliboo"></div>
+<h3>BRASIL</h3>
+<p>Moda infantil com conforto e estilo para os pequenos.</p>
+<a href="https://www.instagram.com/liliboomodas/" target="_blank" class="buy-btn">VER NO INSTAGRAM</a>
+</div>
+</section>
+</div>
+</main>
 
-    <div id="cookie-banner">Utilizamos cookies para melhorar sua experiência. Ao continuar, você concorda.</div>
+<section id="sobre-aba" class="page-content">
+<h2>CURADORIA PREMIUM</h2>
+<p>A Marcas da Gringa nasceu do desejo de simplificar o acesso às grifes mais icônicas do mundo para o consumidor brasileiro. Não somos apenas um guia de compras; somos um filtro de qualidade em um mar de opções digitais.</p>
+<p>Nossa curadoria é minuciosa e estratégica. Selecionamos marcas que equilibram o prestígio internacional com o custo-benefício real para o mercado do Brasil. Analisamos desde a autenticidade das peças até a reputação das lojas onde elas estão disponíveis.</p>
+</section>
 
-    <div class="topbar">Curadoria Premium · Marcas Originais · Entrega em todo o Brasil</div>
+<section id="como-funciona-page" class="page-content">
+<h2>COMO FUNCIONA</h2>
+<p>O Marcas da Gringa atua como uma vitrine inteligente. Ao clicar em uma marca, você é direcionado para a plataforma oficial do parceiro para concluir sua compra com total segurança e suporte direto do fabricante.</p>
+</section>
 
-    <header>
-        <a href="javascript:void(0)" onclick="resetHeroFromBrands()" class="logo-box">
-            <div class="logo-sq"><div class="logo-sq-inner"></div><span>MG</span></div>
-            <div class="logo-text"><h1>MARCAS</h1><p>DA GRINGA</p></div>
-        </a>
-        <nav>
-            <ul>
-                <li><a onclick="resetHeroFromBrands()">Início</a></li>
-                <li class="dropdown">
-                    <a>Marcas ▾</a>
-                    <div class="dropdown-content">
-                        <a href="https://lmdee.link/uA-rQMe5-RKj" target="_blank">Aeropostale</a>
-                        <a href="https://lmdee.link/iMa18Trvld-P" target="_blank">Guess</a>
-                        <a href="https://lmdee.link/T3uQlonUbKwz" target="_blank">Funko</a>
-                        <a href="https://lmdee.link/324oCyCOMHS-" target="_blank">Líquido</a>
-                        <a href="https://www.instagram.com/liliboomodas/" target="_blank">Liliboo</a>
-                        <a onclick="showBrandsInHero()">Todas</a>
-                    </div>
-                </li>
-                <li class="dropdown">
-                    <a>Categorias ▾</a>
-                    <div class="dropdown-content">
-                        <a onclick="goToSection('loja', 'masculino')">Masculino</a>
-                        <a onclick="goToSection('loja', 'feminino')">Feminino</a>
-                        <a onclick="goToSection('loja', 'infantil')">Infantil</a>
-                        <a onclick="goToSection('loja', 'acessorios')">Acessórios</a>
-                        <a onclick="goToSection('loja', 'outros')">Outros</a>
-                    </div>
-                </li>
-            </ul>
-        </nav>
-        <div class="search-container">
-            <input type="text" id="search-input" placeholder="procura..." onkeyup="searchSite(event)">
-            <i class="fas fa-search search-icon" onclick="runSearch()"></i>
-        </div>
-    </header>
+<section id="faq" class="page-content">
+<h2>PERGUNTAS FREQUENTES</h2>
+<div class="faq-item"><span class="faq-q">1. O que é o Marcas da Gringa?</span><span class="faq-a">O Marcas da Gringa é um site de curadoria que apresenta grandes marcas internacionais disponíveis para compra no Brasil.</span></div>
+<div class="faq-item"><span class="faq-q">2. Vocês vendem os produtos diretamente?</span><span class="faq-a">Não. Nós não vendemos os produtos diretamente. Nosso papel é indicar produtos e direcionar você para os sites oficiais.</span></div>
+<div class="faq-item"><span class="faq-q">3. O que são links de afiliado?</span><span class="faq-a">Alguns links do site são links de afiliado, o que significa que podemos receber uma comissão.</span></div>
+<div class="faq-item"><span class="faq-q">4. Eu pago mais caro comprando pelos links?</span><span class="faq-a">Não. O preço é o mesmo, ou até mesmo inferior no caso de promoções específicas.</span></div>
+<div class="faq-item"><span class="faq-q">5. Vocês são responsáveis pela entrega ou garantia dos produtos?</span><span class="faq-a">Não. Tanto a venda, quanto a logística de entrega é realizada pela loja ou marca específica.</span></div>
+<div class="faq-item"><span class="faq-q">6. Os produtos são originais?</span><span class="faq-a">Indicamos apenas lojas e marcas confiáveis, autenticadas pelas próprias marcas.</span></div>
+<div class="faq-item"><span class="faq-q">7. Como vocês escolhem os produtos?</span><span class="faq-a">Nossa curadoria leva em conta diversos fatores, como: Reputação da marca e Custo-benefício.</span></div>
+<div class="faq-item"><span class="faq-q">8. Vocês recebem para recomendar produtos?</span><span class="faq-a">Sim, podemos receber comissão por algumas recomendações.</span></div>
+<div class="faq-item"><span class="faq-q">9. Como posso entrar em contato?</span><span class="faq-a">Você pode entrar em contato através do e-mail ou pelas nossas redes sociais.</span></div>
+<div class="faq-item"><span class="faq-q">10. Posso confiar nas recomendações?</span><span class="faq-a">Nosso objetivo é ajudar você a tomar decisões mais informadas.</span></div>
+</section>
 
-    <main id="home-page" class="page-active">
-        <section class="hero" id="hero-section">
-            <div class="hero-content" id="hero-dynamic-content">
-                <p style="letter-spacing: 5px; font-size: 12px;">BEM-VINDO À</p>
-                <h2>MARCAS DA GRINGA</h2>
-                <p style="letter-spacing: 3px; font-size: 14px;">O melhor do estilo internacional diretamente para você.</p>
+<section id="termos" class="page-content">
+<h2>TERMOS DE USO</h2>
+<p>1. Aceitação dos termos: Ao acessar o site Marcas da Gringa, você concorda com estes Termos de Uso. Se não concordar com algum ponto, por favor, não utilize nosso site.</p>
+<p>2. Natureza do serviço: O site atua como plataforma de conteúdo e recomendação. Não somos uma loja virtual e não vendemos produtos diretamente.</p>
+<p>3. Links de terceiros: O site contém links para parceiros e lojas externas. Não nos responsabilizamos pelas práticas de privacidade ou conteúdo desses sites.</p>
+<p>4. Propriedade intelectual: Todo o conteúdo do site, incluindo textos, imagens e logotipos, são propriedade da Marcas da Gringa ou de seus respectivos donos.</p>
+<p>5. Limitação de responsabilidade: Não nos responsabilizamos por danos decorrentes do uso das informações ou produtos recomendados em nosso site.</p>
+<p>6. Alterações nos termos: Reservamos o direito de alterar estes termos a qualquer momento. As alterações entrarão em vigor após serem publicadas no site.</p>
+</section>
+
+<section id="privacidade" class="page-content">
+<h2>POLÍTICA DE PRIVACIDADE</h2>
+<p>Última atualização: 13/04/2026. Em conformidade com a LGPD (Lei nº 13.709/2018 ).</p>
+<p>1. Coleta de informações: Não coletamos dados pessoais diretamente através do site. Os únicos dados que podem ser coletados são através de cookies essenciais para o funcionamento do site.</p>
+<p>2. Cookies: Utilizamos cookies para melhorar sua experiência de navegação. Ao continuar navegando, você concorda com o uso de cookies.</p>
+<p>3. Links externos: Nosso site contém links para lojas parceiras. Não nos responsabilizamos pela privacidade praticada por esses sites.</p>
+<p>4. Dados de terceiros: Para compras realizadas em lojas parceiras, os dados são tratados exclusivamente por essas empresas, conforme suas próprias políticas de privacidade.</p>
+<p>5. Contato: Em caso de dúvidas sobre nossa política de privacidade, entre em contato através do e-mail: marcasdagringa@gmail.com</p>
+</section>
+
+<section id="trocas-page" class="page-content">
+<h2>TROCAS E DEVOLUÇÕES</h2>
+<p>O Marcas da Gringa atua exclusivamente como um canal de curadoria. Todo o processo é de responsabilidade direta da marca parceira.</p>
+<p>Todas as trocas e devoluções devem seguir as politicas estabelecidas pelas lojas e marcas parceiras. Consulte as condições nos sites das lojas e marcas, que podem ser acessados através do menu Marcas.</p>
+</section>
+
+<section id="prazos-page" class="page-content">
+<h2>PRAZOS DE ENTREGA</h2>
+<p>O Marcas da Gringa atua exclusivamente como um canal de curadoria. Todo o processo é de responsabilidade direta da marca parceira.</p>
+<p>Os prazos de entrega são de responsabilidade de cada loja ou marca, e seguem as politicas estabelecidas por estes parceiros. Consulte as condições nos sites das lojas ou marcas, que podem ser acessados através do menu Marcas.</p>
+</section>
+
+<div id="contact-modal" class="modal-overlay">
+    <div class="modal-content">
+        <h2 id="modal-title">CONTATO</h2>
+        <form class="modal-form" onsubmit="sendEmail(event)">
+            <input type="email" id="contact-email" placeholder="Seu e-mail" required>
+            <input type="text" id="contact-subject" placeholder="Assunto" required>
+            <textarea id="contact-message" placeholder="Sua mensagem" required></textarea>
+            <div class="modal-btns">
+                <button type="button" class="btn-cancel" onclick="closeContactModal()">Cancelar</button>
+                <button type="submit" class="btn-send">Enviar</button>
             </div>
-        </section>
-
-        <div id="main-brands-block" style="display: none;">
-            <div class="section-title" id="loja">
-                <h2 id="cat-title">NOSSAS MARCAS</h2>
-            </div>
-
-            <section class="brands-grid" id="main-grid">
-                <div class="brand-card" data-cat="masculino feminino acessorios">
-                    <div class="brand-logo"><img src="https://i.postimg.cc/JHq1NGjD/aeropostale-logo-2.png" alt="Aeropostale"></div>
-                    <h3>ESTADOS UNIDOS</h3>
-                    <p>Moda casual americana autêntica e desejada.</p>
-                    <a href="https://lmdee.link/uA-rQMe5-RKj" target="_blank" class="buy-btn">COMPRAR AGORA</a>
-                </div>
-                <div class="brand-card" data-cat="masculino feminino acessorios">
-                    <div class="brand-logo"><img src="https://i.postimg.cc/jL3hcvxf/guess-wordmark-logo.png" class="logo-guess" alt="Guess"></div>
-                    <h3>ESTADOS UNIDOS</h3>
-                    <p>Sofisticação e glamour com DNA californiano.</p>
-                    <a href="https://lmdee.link/iMa18Trvld-P" target="_blank" class="buy-btn">COMPRAR AGORA</a>
-                </div>
-                <div class="brand-card" data-cat="outros">
-                    <div class="brand-logo"><img src="https://i.postimg.cc/k2Vvp8DC/funko-logo-1.png" class="logo-funko" alt="Funko"></div>
-                    <h3>ESTADOS UNIDOS</h3>
-                    <p>Os colecionáveis mais famosos do mundo.</p>
-                    <a href="https://lmdee.link/T3uQlonUbKwz" target="_blank" class="buy-btn">COMPRAR AGORA</a>
-                </div>
-                <div class="brand-card" data-cat="masculino feminino acessorios">
-                    <div class="brand-logo"><img src="https://i.postimg.cc/Jsy52J0v/liquidostore-logo.png" class="logo-liquido" alt="Liquido"></div>
-                    <h3>BRASIL</h3>
-                    <p>Alta performance e estilo para o seu treino.</p>
-                    <a href="https://lmdee.link/324oCyCOMHS-" target="_blank" class="buy-btn">COMPRAR AGORA</a>
-                </div>
-                <div class="brand-card" data-cat="infantil">
-                    <div class="brand-logo"><img src="https://i.postimg.cc/wB1Tf0yQ/Liliboo-logo.png" class="logo-liliboo" alt="Liliboo"></div>
-                    <h3>BRASIL</h3>
-                    <p>Moda infantil com conforto e estilo para os pequenos.</p>
-                    <a href="https://www.instagram.com/liliboomodas/" target="_blank" class="buy-btn">VER NO INSTAGRAM</a>
-                </div>
-            </section>
-        </div>
-    </main>
-
-    <section id="sobre-aba" class="page-content">
-        <h2>CURADORIA PREMIUM</h2>
-        <p>A Marcas da Gringa nasceu do desejo de simplificar o acesso às grifes mais icônicas do mundo para o consumidor brasileiro. Não somos apenas um guia de compras; somos um filtro de qualidade em um mar de opções digitais.</p>
-        <p>Nossa curadoria é minuciosa e estratégica. Selecionamos marcas que equilibram o prestígio internacional com o custo-benefício real para o mercado do Brasil. Analisamos desde a autenticidade das peças até a reputação das lojas onde elas estão disponíveis.</p>
-        <p>Como funciona: O Marcas da Gringa atua como uma vitrine inteligente. Ao clicar em uma marca, você é direcionado para a plataforma oficial do parceiro para concluir sua compra com total segurança e suporte direto do fabricante.</p>
-    </section>
-
-    <section id="faq" class="page-content">
-        <h2>PERGUNTAS FREQUENTES</h2>
-        <div class="faq-item"><span class="faq-q">1. O que é o Marcas da Gringa?</span><span class="faq-a">O Marcas da Gringa é um site de curadoria que apresenta grandes marcas internacionais disponíveis para compra no Brasil.</span></div>
-        <div class="faq-item"><span class="faq-q">2. Vocês vendem os produtos diretamente?</span><span class="faq-a">Não. Nós não vendemos os produtos diretamente. Nosso papel é indicar produtos e direcionar você para os sites oficiais.</span></div>
-        <div class="faq-item"><span class="faq-q">3. O que são links de afiliado?</span><span class="faq-a">Alguns links do site são links de afiliado, o que significa que podemos receber uma comissão.</span></div>
-        <div class="faq-item"><span class="faq-q">4. Eu pago mais caro comprando pelos links?</span><span class="faq-a">Não. O preço é o mesmo, ou até mesmo inferior no caso de promoções específicas.</span></div>
-        <div class="faq-item"><span class="faq-q">5. Vocês são responsáveis pela entrega ou garantia dos produtos?</span><span class="faq-a">Não. Tanto a venda, quanto a logística de entrega é realizada pela loja ou marca específica.</span></div>
-        <div class="faq-item"><span class="faq-q">6. Os produtos são originais?</span><span class="faq-a">Indicamos apenas lojas e marcas confiáveis, autenticadas pelas próprias marcas.</span></div>
-        <div class="faq-item"><span class="faq-q">7. Como vocês escolhem os produtos?</span><span class="faq-a">Nossa curadoria leva em conta diversos fatores, como: Reputação da marca e Custo-benefício.</span></div>
-        <div class="faq-item"><span class="faq-q">8. Vocês recebem para recomendar produtos?</span><span class="faq-a">Sim, podemos receber comissão por algumas recomendações.</span></div>
-        <div class="faq-item"><span class="faq-q">9. Como posso entrar em contato?</span><span class="faq-a">Você pode entrar em contato através do e-mail ou pelas nossas redes sociais.</span></div>
-        <div class="faq-item"><span class="faq-q">10. Posso confiar nas recomendações?</span><span class="faq-a">Nosso objetivo é ajudar você a tomar decisões mais informadas.</span></div>
-    </section>
-
-    <section id="termos" class="page-content">
-        <h2>TERMOS DE USO</h2>
-        <p>1. Aceitação dos termos: Ao acessar o site Marcas da Gringa, você concorda com estes Termos de Uso. Se não concordar com algum ponto, por favor, não utilize nosso site.</p>
-        <p>2. Natureza do serviço: O site atua como plataforma de conteúdo e recomendação. Não somos uma loja virtual e não vendemos produtos diretamente.</p>
-        <p>3. Links de terceiros: O site contém links para parceiros e lojas externas. Não nos responsabilizamos pelas práticas de privacidade ou conteúdo desses sites.</p>
-        <p>4. Propriedade intelectual: Todo o conteúdo do site, incluindo textos, imagens e logotipos, são propriedade da Marcas da Gringa ou de seus respectivos donos.</p>
-        <p>5. Limitação de responsabilidade: Não nos responsabilizamos por danos decorrentes do uso das informações ou produtos recomendados em nosso site.</p>
-        <p>6. Alterações nos termos: Reservamos o direito de alterar estes termos a qualquer momento. As alterações entrarão em vigor após serem publicadas no site.</p>
-    </section>
-
-    <section id="privacidade" class="page-content">
-        <h2>POLÍTICA DE PRIVACIDADE</h2>
-        <p>Última atualização: 13/04/2026. Em conformidade com a LGPD (Lei nº 13.709/2018).</p>
-        <p>1. Coleta de informações: Não coletamos dados pessoais diretamente através do site. Os únicos dados que podem ser coletados são através de cookies essenciais para o funcionamento do site.</p>
-        <p>2. Cookies: Utilizamos cookies para melhorar sua experiência de navegação. Ao continuar navegando, você concorda com o uso de cookies.</p>
-        <p>3. Links externos: Nosso site contém links para lojas parceiras. Não nos responsabilizamos pela privacidade praticada por esses sites.</p>
-        <p>4. Dados de terceiros: Para compras realizadas em lojas parceiras, os dados são tratados exclusivamente por essas empresas, conforme suas próprias políticas de privacidade.</p>
-        <p>5. Contato: Em caso de dúvidas sobre nossa política de privacidade, entre em contato através do e-mail: marcasdagringa@gmail.com</p>
-    </section>
-
-    <section id="trocas-page" class="page-content">
-        <h2>TROCAS, DEVOLUÇÕES E ENTREGAS</h2>
-        <p>O Marcas da Gringa atua exclusivamente como um canal de curadoria. Todo o processo é de responsabilidade direta da marca parceira.</p>
-    </section>
-
-    <div class="footer-main">
-        <div class="footer-col" id="foot-inst">
-            <h4>INSTITUCIONAL</h4>
-            <ul>
-                <li><a onclick="showFooterContent('sobre-aba')">Sobre nós</a></li>
-                <li><a onclick="showFooterContent('sobre-aba')">Como funciona</a></li>
-                <li><a onclick="showBrandsInHero()">Nossas marcas</a></li>
-                <li><a href="mailto:marcasdagringa@gmail.com">Trabalhe conosco</a></li>
-                <li><a onclick="showFooterContent('privacidade')">Política de privacidade</a></li>
-            </ul>
-        </div>
-        <div class="footer-col">
-            <h4>INFORMAÇÕES</h4>
-            <ul>
-                <li><a onclick="showFooterContent('trocas-page')">Trocas e devoluções</a></li>
-                <li><a onclick="showFooterContent('trocas-page')">Prazos de entrega</a></li>
-                <li><a onclick="showFooterContent('faq')">Perguntas frequentes</a></li>
-                <li><a onclick="showFooterContent('termos')">Termos de uso</a></li>
-            </ul>
-        </div>
-        <div class="footer-col">
-            <h4>CONTATOS</h4>
-            <div class="footer-social-icons">
-                <a href="mailto:marcasdagringa@gmail.com"><i class="fas fa-envelope"></i></a>
-                <a href="javascript:void(0)" title="WhatsApp em breve"><i class="fab fa-whatsapp"></i></a>
-            </div>
-        </div>
-        <div class="footer-col">
-            <h4>REDES SOCIAIS</h4>
-            <div class="footer-social-icons">
-                <a href="https://www.instagram.com/marcasdagringa" target="_blank"><i class="fab fa-instagram"></i></a>
-                <a href="https://www.facebook.com/profile.php?id=61572556350019" target="_blank"><i class="fab fa-facebook"></i></a>
-                <a href="https://www.tiktok.com/@marcasdagringa" target="_blank"><i class="fab fa-tiktok"></i></a>
-                <a href="https://www.youtube.com/@marcasdagringa" target="_blank"><i class="fab fa-youtube"></i></a>
-            </div>
-        </div>
+        </form>
     </div>
+</div>
 
-    <footer>© 2026 Marcas da Gringa. Todos os direitos reservados.</footer>
+<div class="footer-main">
+<div class="footer-col" id="foot-inst">
+<h4>INSTITUCIONAL</h4>
+<ul>
+<li><a onclick="showFooterContent('sobre-aba')">Sobre nós</a></li>
+<li><a onclick="showFooterContent('como-funciona-page')">Como funciona</a></li>
+<li><a onclick="showBrandsInHero()">Nossas marcas</a></li>
+<li><a onclick="openContactModal('Trabalhe Conosco')">Trabalhe conosco</a></li>
+<li><a onclick="showFooterContent('privacidade')">Política de privacidade</a></li>
+</ul>
+</div>
+<div class="footer-col">
+<h4>INFORMAÇÕES</h4>
+<ul>
+<li><a onclick="showFooterContent('trocas-page')">Trocas e devoluções</a></li>
+<li><a onclick="showFooterContent('prazos-page')">Prazos de entrega</a></li>
+<li><a onclick="showFooterContent('faq')">Perguntas frequentes</a></li>
+<li><a onclick="showFooterContent('termos')">Termos de uso</a></li>
+</ul>
+</div>
+<div class="footer-col">
+<h4>CONTATOS</h4>
+<div class="footer-social-icons">
+<a onclick="openContactModal('Contato')"><i class="fas fa-envelope"></i></a>
+<a href="javascript:void(0)" title="WhatsApp em breve"><i class="fab fa-whatsapp"></i></a>
+</div>
+</div>
+<div class="footer-col">
+<h4>REDES SOCIAIS</h4>
+<div class="footer-social-icons">
+<a href="https://www.instagram.com/marcasdagringa" target="_blank"><i class="fab fa-instagram"></i></a>
+<a href="https://www.facebook.com/profile.php?id=61572556350019" target="_blank"><i class="fab fa-facebook"></i></a>
+<a href="https://www.tiktok.com/@marcasdagringa" target="_blank"><i class="fab fa-tiktok"></i></a>
+<a href="https://www.youtube.com/@marcasdagringa" target="_blank"><i class="fab fa-youtube"></i></a>
+</div>
+</div>
+</div>
+<footer>© 2026 Marcas da Gringa. Todos os direitos reservados.</footer>
 
-    <script>
-        function showPage(pageId) {
-            document.querySelectorAll('main, .page-content').forEach(p => p.classList.remove('page-active'));
-            const target = document.getElementById(pageId);
-            if(target) target.classList.add('page-active');
-            window.scrollTo(0, 0); 
+<script>
+function showPage(pageId ) {
+    document.querySelectorAll('main, .page-content').forEach(p => p.classList.remove('page-active'));
+    const target = document.getElementById(pageId);
+    if(target) target.classList.add('page-active');
+    window.scrollTo(0, 0);
+}
+
+function showFooterContent(pageId) {
+    const content = document.getElementById(pageId).innerHTML;
+    const hero = document.getElementById('hero-section');
+    const mainBlock = document.getElementById('main-brands-block');
+    const heroContent = document.getElementById('hero-dynamic-content');
+    
+    showPage('home');
+    hero.style.background = 'var(--gray)';
+    hero.style.height = 'auto';
+    hero.style.minHeight = 'auto';
+    hero.style.padding = '60px 15%';
+    hero.style.color = 'black';
+    hero.style.filter = 'none';
+    
+    const styledContent = content.replace(/<\/p>/g, '</p><div style="height:5px;"></div>')
+                                 .replace(/<h2>/g, '<h2 style="color:var(--gold); margin-bottom:30px; text-transform:uppercase; letter-spacing:5px; font-size:28px; font-weight:400; text-shadow:none; text-align:left;">');
+    
+    heroContent.innerHTML = styledContent;
+    heroContent.classList.add('no-shadow');
+    heroContent.style.textAlign = 'left';
+    mainBlock.style.display = 'none';
+    window.scrollTo(0, 0);
+}
+
+function showBrandsInHero() {
+    const hero = document.getElementById('hero-section');
+    const mainBlock = document.getElementById('main-brands-block');
+    const heroContent = document.getElementById('hero-dynamic-content');
+    hero.style.background = 'var(--gray)';
+    hero.style.height = 'auto';
+    hero.style.minHeight = 'auto';
+    hero.style.padding = '60px 5%';
+    hero.style.color = 'black';
+    hero.style.filter = 'none';
+    
+    filter('all'); 
+    
+    const brandsContent = mainBlock.innerHTML;
+    heroContent.innerHTML = brandsContent;
+    heroContent.classList.add('no-shadow');
+    mainBlock.style.display = 'none';
+    window.scrollTo(0, 0);
+}
+
+function resetHeroFromBrands() {
+    const hero = document.getElementById('hero-section');
+    const mainBlock = document.getElementById('main-brands-block');
+    const heroContent = document.getElementById('hero-dynamic-content');
+    hero.style.background = "url('https://i.postimg.cc/pTwTQnPY/Veneza-3.gif' ) no-repeat center center";
+    hero.style.backgroundSize = 'cover';
+    hero.style.height = '500px';
+    hero.style.minHeight = '500px';
+    hero.style.padding = '0';
+    hero.style.color = 'white';
+    hero.style.filter = 'brightness(0.8)';
+    heroContent.style.display = 'block';
+    heroContent.style.textAlign = 'center';
+    heroContent.innerHTML = '<p style="letter-spacing: 5px; font-size: 12px;">BEM-VINDO À</p><h2>MARCAS DA GRINGA</h2><p style="letter-spacing: 3px; font-size: 14px;">O melhor do estilo internacional diretamente para você.</p>';
+    heroContent.classList.remove('no-shadow');
+    mainBlock.style.display = 'none';
+}
+
+function goToSection(pageId, category = 'all') {
+    const hero = document.getElementById('hero-section');
+    const mainBlock = document.getElementById('main-brands-block');
+    const heroContent = document.getElementById('hero-dynamic-content');
+    
+    hero.style.background = 'var(--gray)';
+    hero.style.height = 'auto';
+    hero.style.minHeight = 'auto';
+    hero.style.padding = '60px 5%';
+    hero.style.color = 'black';
+    hero.style.filter = 'none';
+    
+    filter(category);
+    
+    const brandsContent = mainBlock.innerHTML;
+    heroContent.innerHTML = brandsContent;
+    heroContent.classList.add('no-shadow');
+    mainBlock.style.display = 'none';
+    window.scrollTo(0, 0);
+}
+
+function filter(category) {
+    const cards = document.querySelectorAll('.brand-card');
+    cards.forEach(card => {
+        const cats = card.getAttribute('data-cat') || "";
+        card.style.display = (category === 'all' || cats.includes(category)) ? 'flex' : 'none';
+    });
+    const title = document.getElementById('cat-title');
+    if(title) title.innerText = category === 'all' ? "NOSSAS MARCAS" : "CATEGORIA: " + category.toUpperCase();
+}
+
+function searchSite(event) {
+    if (event.key === 'Enter') runSearch();
+}
+
+function runSearch() {
+    const inputEl = document.getElementById('search-input');
+    const input = inputEl.value.toLowerCase().trim();
+    if (input === "") return;
+    
+    let resultsHTML = `<h2 style="color:var(--gold); margin-bottom:20px; text-shadow:none; font-size:28px; text-align:left;">RESULTADOS PARA: "${input}"</h2><div style="display:grid; grid-template-columns: 1fr; gap:20px; text-align:left;">`;
+    let found = false;
+    const cards = document.querySelectorAll('.brand-card');
+    cards.forEach(card => {
+        if (card.innerText.toLowerCase().includes(input)) {
+            resultsHTML += `<div style="background:white; padding:20px; border:1px solid #eee; min-height:200px; display:flex; flex-direction:column; justify-content:center; width:100%; max-width:1000px; margin:0; text-align:left;">${card.innerHTML}</div>`;
+            found = true;
         }
-
-        function showFooterContent(pageId) {
-            const content = document.getElementById(pageId).innerHTML;
-            const hero = document.getElementById('hero-section');
-            const mainBlock = document.getElementById('main-brands-block');
-            const heroContent = document.getElementById('hero-dynamic-content');
-            
-            showPage('home');
-            hero.style.background = 'var(--gray)';
-            hero.style.height = 'auto';
-            hero.style.minHeight = 'auto';
-            hero.style.padding = '60px 15%';
-            hero.style.color = 'black';
-            hero.style.filter = 'none';
-            
-            // Estilizar o conteúdo para alinhamento à esquerda
-            const styledContent = content.replace(/<h2>/g, '<h2 style="color:var(--gold); margin-bottom:30px; text-transform:uppercase; letter-spacing:3px; font-weight:400; text-shadow:none; text-align:left;">');
-            heroContent.innerHTML = styledContent;
-            heroContent.classList.add('no-shadow');
-            heroContent.style.textAlign = 'left';
-            
-            mainBlock.style.display = 'none';
-            window.scrollTo(0, 0);
-        }
-
-        function showBrandsInHero() {
-            const hero = document.getElementById('hero-section');
-            const mainBlock = document.getElementById('main-brands-block');
-            const heroContent = document.getElementById('hero-dynamic-content');
-            
-            // Oculta o gif e configura o hero
-            hero.style.background = 'var(--gray)';
-            hero.style.height = 'auto';
-            hero.style.minHeight = 'auto';
-            hero.style.padding = '60px 5%';
-            hero.style.color = 'black';
-            hero.style.filter = 'none';
-            
-            // Pega o conteúdo do bloco de marcas (título + grid)
-            const brandsContent = mainBlock.innerHTML;
-            
-            // Insere o conteúdo no hero
-            heroContent.innerHTML = brandsContent;
-            heroContent.classList.add('no-shadow');
-            
-            // Oculta o bloco original de marcas
-            mainBlock.style.display = 'none';
-            
-            // Rola para o topo
-            window.scrollTo(0, 0);
-        }
-
-        function resetHeroFromBrands() {
-            const hero = document.getElementById('hero-section');
-            const mainBlock = document.getElementById('main-brands-block');
-            const heroContent = document.getElementById('hero-dynamic-content');
-            
-            // Restaura o gif
-            hero.style.background = "url('https://i.postimg.cc/pTwTQnPY/Veneza-3.gif') no-repeat center center";
-            hero.style.backgroundSize = 'cover';
-            hero.style.height = '500px';
-            hero.style.minHeight = '500px';
-            hero.style.padding = '0';
-            hero.style.color = 'white';
-            hero.style.filter = 'brightness(0.8)';
-            
-            // Mostra o conteúdo original do hero
-            heroContent.style.display = 'block';
-            heroContent.innerHTML = '<p style="letter-spacing: 5px; font-size: 12px;">BEM-VINDO À</p><h2>MARCAS DA GRINGA</h2><p style="letter-spacing: 3px; font-size: 14px;">O melhor do estilo internacional diretamente para você.</p>';
-            heroContent.classList.remove('no-shadow');
-            
-            // Oculta o bloco de marcas
-            mainBlock.style.display = 'none';
-        }
-
-        function goToSection(pageId, category = 'all') {
-            showPage(pageId);
-            if (pageId === 'home' || pageId === 'loja') {
-                document.getElementById('home-page').classList.add('page-active');
-                filter(category);
-                setTimeout(() => {
-                    const el = document.getElementById('loja');
-                    if(el) window.scrollTo({ top: el.offsetTop - 100, behavior: 'smooth' });
-                }, 100);
-            }
-        }
-
-        function filter(category) {
-            const cards = document.querySelectorAll('.brand-card');
-            cards.forEach(card => {
-                const cats = card.getAttribute('data-cat') || "";
-                card.style.display = (category === 'all' || cats.includes(category)) ? "flex" : "none";
-            });
-            const title = document.getElementById('cat-title');
-            if(title) title.innerText = category === 'all' ? "NOSSAS MARCAS" : "CATEGORIA: " + category.toUpperCase();
-        }
-
-        function searchSite(event) {
-            if (event.key === 'Enter') runSearch();
-        }
-
-        function runSearch() {
-            const input = document.getElementById('search-input').value.toLowerCase().trim();
-            
-            if (input === "") return;
-            
-            // Procura em todo o conteúdo do site
-            const bodyContent = document.body.innerText.toLowerCase();
-            
-            // Coleta todos os elementos que contêm o termo buscado
-            let resultsHTML = `<h2 style="color:var(--gold); margin-bottom:20px; text-shadow:none;">RESULTADOS PARA: "${input}"</h2><div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap:20px;">`;
-            let found = false;
-            
-            // Procura nas marcas
-            const cards = document.querySelectorAll('.brand-card');
-            cards.forEach(card => {
-                if (card.innerText.toLowerCase().includes(input)) {
-                    resultsHTML += `<div style="background:white; padding:20px; border:1px solid #eee; height:400px; display:flex; flex-direction:column; justify-content:center;">${card.innerHTML}</div>`;
+    });
+    if (!found) {
+        const pageContents = document.querySelectorAll('.page-content');
+        pageContents.forEach(page => {
+            if (page.innerText.toLowerCase().includes(input)) {
+                const h2 = page.querySelector('h2');
+                if (h2) {
+                    resultsHTML += `<div style="background:white; padding:20px; border:1px solid #eee; width:100%; max-width:1000px; margin:0; text-align:left;"><h3 style="color:var(--gold); margin-bottom:10px;">${h2.innerText}</h3><p>${page.innerText.substring(0, 200)}...</p></div>`;
                     found = true;
                 }
-            });
-            
-            // Se não encontrou nas marcas, procura em outras seções
-            if (!found) {
-                // Procura no conteúdo das páginas
-                const pageContents = document.querySelectorAll('.page-content');
-                pageContents.forEach(page => {
-                    if (page.innerText.toLowerCase().includes(input) && page.style.display !== 'none') {
-                        // Pega o título da página
-                        const h2 = page.querySelector('h2');
-                        if (h2) {
-                            resultsHTML += `<div style="background:white; padding:20px; border:1px solid #eee;"><h3 style="color:var(--gold); margin-bottom:10px;">${h2.innerText}</h3><p>${page.innerText.substring(0, 200)}...</p></div>`;
-                            found = true;
-                        }
-                    }
-                });
             }
-            
-            resultsHTML += "</div>";
-            if (!found) resultsHTML = `<h2 style="color:var(--gold); text-shadow:none;">NENHUM RESULTADO ENCONTRADO PARA "${input}"</h2>`;
-            
-            const hero = document.getElementById('hero-section');
-            hero.style.background = 'var(--gray)';
-            hero.style.height = 'auto';
-            hero.style.minHeight = 'auto';
-            hero.style.padding = '50px 5%';
-            hero.style.color = 'black';
-            hero.style.filter = 'none';
-            
-            document.getElementById('hero-dynamic-content').innerHTML = resultsHTML;
-            document.getElementById('hero-dynamic-content').classList.add('no-shadow');
-            document.getElementById('main-brands-block').style.display = 'none';
-            
-            window.scrollTo(0, 0);
-        }
+        });
+    }
+    resultsHTML += "</div>";
+    if (!found) resultsHTML = `<h2 style="color:var(--gold); text-shadow:none; font-size:28px; text-align:left;">NENHUM RESULTADO ENCONTRADO PARA "${input}"</h2>`;
+    
+    const hero = document.getElementById('hero-section');
+    hero.style.background = 'var(--gray)';
+    hero.style.height = 'auto';
+    hero.style.minHeight = 'auto';
+    hero.style.padding = '50px 5%';
+    hero.style.color = 'black';
+    hero.style.filter = 'none';
+    document.getElementById('hero-dynamic-content').innerHTML = resultsHTML;
+    document.getElementById('hero-dynamic-content').classList.add('no-shadow');
+    document.getElementById('main-brands-block').style.display = 'none';
+    
+    inputEl.value = ''; 
+    window.scrollTo(0, 0);
+}
 
-        function closeCookies() { 
-            const banner = document.getElementById('cookie-banner');
-            if(banner) banner.style.display = 'none'; 
-        }
-    </script>
+function closeCookies() {
+    const banner = document.getElementById('cookie-banner');
+    if(banner) banner.style.display = 'none';
+}
+
+function openContactModal(title) {
+    document.getElementById('modal-title').innerText = title.toUpperCase();
+    document.getElementById('contact-modal').style.display = 'flex';
+}
+
+function closeContactModal() {
+    document.getElementById('contact-modal').style.display = 'none';
+}
+
+function sendEmail(event) {
+    event.preventDefault();
+    const email = document.getElementById('contact-email').value;
+    const subject = document.getElementById('contact-subject').value;
+    const message = document.getElementById('contact-message').value;
+    alert(`Mensagem enviada com sucesso para marcasdagringa@gmail.com!\n\nDe: ${email}\nAssunto: ${subject}`);
+    closeContactModal();
+    event.target.reset();
+}
+</script>
 </body>
 </html>
